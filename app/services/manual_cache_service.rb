@@ -7,9 +7,13 @@ class ManualCacheService
   end
 
   def deliver
-    return if ENV['TURN_OFF_MANUAL_CACHE']
-    return unless @event
-    send @event
+    begin
+      return unless @event
+      send @event
+
+    rescue
+      nil
+    end
   end
 
   private

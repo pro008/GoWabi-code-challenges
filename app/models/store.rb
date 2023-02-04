@@ -26,9 +26,9 @@ class Store < ActiveRecord::Base
 
   scope :data_markers, -> { active.select(:store_type, :latitude, :longitude, :name) }
 
-  def active_markers
+  def self.active_markers
     data = nil
-    data = ManualCacheService.new(:get, 'store').deliver unless ENV['TURN_OFF_MANUAL_CACHE']
+    data = ManualCacheService.new(:get, 'store').deliver
 
     return JSON.parse(data) if data
 
