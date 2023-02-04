@@ -25,4 +25,13 @@ class Store < ActiveRecord::Base
   enum store_type: STORE_TYPES
 
   scope :data_markers, -> { active.select(:store_type, :latitude, :longitude, :name) }
+
+  def active_markers
+    data = nil
+    data = ManualCacheService.new(:get, 'store').deliver unless ENV['TURN_OFF_MANUAL_CACHE']
+
+    return JSON.parse(data) if data
+
+    data_markers.as_json
+  end
 end

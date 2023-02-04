@@ -1,5 +1,5 @@
 class MapsController < ApplicationController
   def index
-    @stores = Store.data_markers
+    @stores = Store.active_markers
   end
 end
