@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  postgres:
+    container_name: gowabi_database
+    image: postgres:${TAG:-latest}
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    networks:
+      - local-network
+  app:
+    env_file: .env
+    build: .
+    tty: true #interactive mode allow us to execute command while container is running
+    stdin_open: true
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      - local-network
+    depends_on:
+      - postgres
+  redis:
+    image: 'redis:5-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    networks:
+      - local-network
+
+networks:
+   local-network:
+        driver: bridge

@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  host: postgres
+  port: 5432
+  password: postgres
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: gowabi_code_challenge_development
+
+test:
+  <<: *default
+  database: gowabi_code_challenge_test
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>

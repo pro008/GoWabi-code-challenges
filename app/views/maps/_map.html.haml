@@ -1,0 +1,49 @@
+%script{:defer => "defer", :src => get_google_map_api}
+%script{:src => "https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"}
+
+%h2 Google Map
+#map
+
+:javascript
+  var infoWindow;
+
+  function initMap() {
+    const bangkok = { lat: #{ENV['DEFAULT_LATITUDE']}, lng: #{ENV['DEFAULT_LONGITUDE']} };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 9,
+      center: bangkok,
+    });
+
+    infoWindow = new google.maps.InfoWindow({
+      content: "",
+      disableAutoPan: true,
+    });
+
+    const markers = generateMarkers()
+
+    return new markerClusterer.MarkerClusterer({ map, markers });
+  }
+
+
+  function generateMarkers() {
+    return #{types}.map((type, i) => {
+      position = {lat: #{lats}[i], lng: #{lngs}[i]};
+      const marker = initMarker(type, position);
+
+      marker.addListener("click", () => {
+        infoWindow.setContent(type);
+        infoWindow.open(map, marker);
+      });
+
+      return marker;
+    });
+  }
+
+  function initMarker(label, position) {
+    return new google.maps.Marker({
+      position,
+      label,
+    });
+  }
+  
+  window.initMap = initMap;

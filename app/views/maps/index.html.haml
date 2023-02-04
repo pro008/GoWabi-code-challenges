@@ -1,0 +1,6 @@
+- types, lats, lngs = extract_stores_for_markers(@stores)
+
+.wrapper 
+  .card-form
+    %h1 GoWabi Challenges Code
+    = render 'map', types: types, lats: lats, lngs: lngs
