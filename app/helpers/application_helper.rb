@@ -4,7 +4,8 @@ module ApplicationHelper
   end
 
   def extract_stores_for_markers(stores)
-    [stores.map { |e| e.store_type.titleize },
+    [stores.map { |e| e.name },
+     stores.map { |e| e.store_type },
      stores.map { |e| e.latitude },
      stores.map { |e| e.longitude }]
   end

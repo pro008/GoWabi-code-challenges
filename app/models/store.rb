@@ -24,5 +24,5 @@ class Store < ActiveRecord::Base
   enum status: { active: 1, inactive: 2 }
   enum store_type: STORE_TYPES
 
-  scope :data_markers, -> { active.select(:store_type, :latitude, :longitude) }
+  scope :data_markers, -> { active.select(:store_type, :latitude, :longitude, :name) }
 end

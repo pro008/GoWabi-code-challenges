@@ -28,10 +28,10 @@
   function generateMarkers() {
     return #{types}.map((type, i) => {
       position = {lat: #{lats}[i], lng: #{lngs}[i]};
-      const marker = initMarker(type, position);
+      const marker = initMarker(#{names}[i], type, position);
 
       marker.addListener("click", () => {
-        infoWindow.setContent(type);
+        infoWindow.setContent(#{names}[i]);
         infoWindow.open(map, marker);
       });
 
@@ -39,11 +39,21 @@
     });
   }
 
-  function initMarker(label, position) {
+  function initMarker(name, type, position) {
+    console.log(name)
     return new google.maps.Marker({
       position,
-      label,
+      name,
+      icon: markerIcon(type)
     });
+  }
+
+  function markerIcon(type) {
+    if (type == 'spa_and_massage') return "#{ENV['BLUE_MARKER']}"
+    if (type == 'nails') return "#{ENV['YELLOW_MARKER']}"
+    if (type == 'hair_removal') return "#{ENV['PURPLE_MARKER']}"
+
+    return '';
   }
   
   window.initMap = initMap;
